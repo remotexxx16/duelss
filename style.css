@@ -1,0 +1,52 @@
+* { box-sizing: border-box; user-select: none; -webkit-tap-highlight-color: transparent; }
+body, html { margin: 0; padding: 0; width: 100%; height: 100%; font-family: -apple-system, BlinkMacSystemFont, sans-serif; background: radial-gradient(circle at top, #17102c 0%, #07070c 100%); color: #fff; overflow: hidden; }
+.layout { display: flex; flex-direction: column; height: 100vh; }
+.header { display: flex; justify-content: space-between; align-items: center; padding: 14px 18px; background: rgba(13, 13, 22, 0.9); border-bottom: 1px solid rgba(0, 243, 255, 0.25); box-shadow: 0 4px 20px rgba(0, 243, 255, 0.08); }
+.logo { font-weight: 900; font-size: 19px; letter-spacing: 1.5px; color: #00f3ff; text-shadow: 0 0 10px rgba(0, 243, 255, 0.7); }
+.balance-box { display: flex; align-items: center; background: rgba(20, 20, 35, 0.9); padding: 6px 12px; border-radius: 12px; gap: 10px; border: 1px solid rgba(0, 255, 136, 0.4); }
+.balance-val { font-weight: 800; font-size: 15px; color: #00ff88; text-shadow: 0 0 8px rgba(0, 255, 136, 0.5); }
+.add-btn { background: #00ff88; color: #050508; border: none; border-radius: 7px; font-weight: 900; font-size: 15px; padding: 2px 8px; cursor: pointer; box-shadow: 0 0 10px rgba(0, 255, 136, 0.7); }
+.content { flex: 1; overflow-y: auto; padding: 16px; }
+.screen { display: none; flex-direction: column; height: 100%; }
+.screen.active { display: flex; }
+.bet-selector { background: rgba(18, 18, 30, 0.85); padding: 14px; border-radius: 18px; margin-bottom: 18px; border: 1px solid rgba(188, 19, 254, 0.35); }
+.bet-title { font-size: 12px; color: #b8b8d0; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; }
+.bet-buttons { display: flex; gap: 8px; }
+.bet-btn { flex: 1; padding: 10px; background: #131320; border: 1px solid #2d2d44; color: #a0a0c0; border-radius: 11px; font-weight: 800; cursor: pointer; }
+.bet-btn.selected { background: rgba(188, 19, 254, 0.2); color: #fff; border-color: #bc13fe; box-shadow: 0 0 14px rgba(188, 19, 254, 0.6); }
+.game-card { background: linear-gradient(145deg, rgba(24, 24, 42, 0.95) 0%, rgba(12, 12, 22, 0.98) 100%); border: 1px solid rgba(0, 243, 255, 0.35); border-radius: 20px; padding: 20px; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; }
+.game-card.coming-soon { border: 1px dashed rgba(140, 140, 175, 0.3); background: rgba(15, 15, 24, 0.6); opacity: 0.75; }
+.game-info h3 { margin: 0 0 6px 0; font-size: 18px; color: #fff; }
+.game-info p { margin: 0; font-size: 13px; color: #9090b0; line-height: 1.35; max-width: 195px; }
+.play-btn { background: linear-gradient(90deg, #00f3ff 0%, #0099ff 100%); color: #05050a; border: none; padding: 13px 22px; border-radius: 12px; font-weight: 900; font-size: 13px; cursor: pointer; box-shadow: 0 0 15px rgba(0, 243, 255, 0.6); }
+.soon-badge { background: rgba(188, 19, 254, 0.15); color: #d884ff; border: 1px solid rgba(188, 19, 254, 0.35); padding: 8px 14px; border-radius: 10px; font-size: 12px; font-weight: 800; }
+.profile-card { background: rgba(18, 18, 30, 0.85); border-radius: 22px; padding: 20px; text-align: center; border: 1px solid rgba(0, 243, 255, 0.3); margin-bottom: 14px; }
+.avatar-circle { width: 76px; height: 76px; background: #131322; border-radius: 50%; margin: 0 auto 10px; display: flex; justify-content: center; align-items: center; font-size: 38px; border: 2px solid #00f3ff; box-shadow: 0 0 18px rgba(0, 243, 255, 0.5); }
+.user-name { font-size: 20px; font-weight: 900; margin-bottom: 6px; }
+.demo-badge { display: inline-block; background: rgba(0, 255, 136, 0.12); color: #00ff88; font-size: 11px; font-weight: 800; padding: 5px 12px; border-radius: 8px; margin-bottom: 14px; border: 1px solid rgba(0, 255, 136, 0.35); }
+.avatars-grid { display: flex; justify-content: center; gap: 10px; margin-top: 8px; }
+.ava-opt { font-size: 22px; background: #131322; border: 1px solid #2d2d44; border-radius: 12px; padding: 6px 10px; cursor: pointer; }
+.stats-row { display: flex; gap: 12px; margin-bottom: 14px; }
+.stat-box { flex: 1; background: rgba(18, 18, 30, 0.85); padding: 12px; border-radius: 16px; text-align: center; border: 1px solid #2a2a3d; }
+.stat-num { font-size: 22px; font-weight: 900; margin-bottom: 2px; }
+.stat-label { font-size: 11px; color: #8e8eb0; text-transform: uppercase; }
+.withdraw-btn { width: 100%; padding: 15px; background: rgba(20, 20, 34, 0.8); color: #8888a8; border: 1px dashed rgba(188, 19, 254, 0.45); border-radius: 16px; font-weight: 800; font-size: 13px; cursor: pointer; margin-bottom: 10px; }
+.reset-btn { width: 100%; padding: 10px; background: transparent; color: #5e5e7a; border: none; font-size: 12px; cursor: pointer; }
+.game-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+.back-btn { background: #181828; color: #00f3ff; border: 1px solid rgba(0, 243, 255, 0.35); padding: 8px 14px; border-radius: 10px; font-weight: 800; cursor: pointer; }
+.pot-badge { background: rgba(188, 19, 254, 0.15); color: #e879f9; border: 1px solid rgba(188, 19, 254, 0.4); padding: 6px 14px; border-radius: 10px; font-weight: 800; font-size: 14px; }
+.duel-bar { display: flex; justify-content: space-between; align-items: center; background: rgba(18, 18, 30, 0.9); border: 1px solid #2b2b40; border-radius: 16px; padding: 10px 14px; margin-bottom: 12px; }
+.duel-player { display: flex; align-items: center; gap: 8px; width: 42%; }
+.duel-player.right { justify-content: flex-end; text-align: right; }
+.duel-ava { font-size: 24px; }
+.duel-name { font-size: 13px; font-weight: 700; color: #d0d0e8; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.duel-vs { font-size: 12px; font-weight: 900; color: #00f3ff; text-shadow: 0 0 8px rgba(0,243,255,0.6); }
+.arena { flex: 1; border-radius: 24px; background: rgba(18, 18, 30, 0.9); display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 20px; border: 2px solid rgba(0, 243, 255, 0.35); box-shadow: 0 0 25px rgba(0, 243, 255, 0.1); cursor: pointer; }
+.arena.searching { border-color: #bc13fe; box-shadow: 0 0 30px rgba(188, 19, 254, 0.35); }
+.arena.wait { background: rgba(255, 0, 85, 0.25); border-color: #ff0055; box-shadow: 0 0 35px rgba(255, 0, 85, 0.5); }
+.arena.go { background: rgba(0, 255, 136, 0.25); border-color: #00ff88; box-shadow: 0 0 40px rgba(0, 255, 136, 0.6); }
+.arena-title { font-size: 25px; font-weight: 900; margin-bottom: 10px; }
+.arena-sub { font-size: 14px; color: #c0c0d8; max-width: 260px; line-height: 1.4; }
+.nav { display: flex; background: rgba(12, 12, 20, 0.95); border-top: 1px solid rgba(0, 243, 255, 0.2); padding: 8px 16px 20px; }
+.nav-item { flex: 1; text-align: center; color: #6e6e8f; font-size: 13px; font-weight: 800; padding: 8px; cursor: pointer; }
+.nav-item.active { color: #00f3ff; text-shadow: 0 0 10px rgba(0, 243, 255, 0.7); }
