@@ -1,166 +1,176 @@
+html
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Онлайн Дуэль 1 на 1</title>
-    <script src="https://telegram.org"></script>
-    <style>
-        * { box-sizing: border-box; user-select: none; -webkit-tap-highlight-color: transparent; }
-        body, html { margin: 0; padding: 0; width: 100%; height: 100%; font-family: -apple-system, BlinkMacSystemFont, sans-serif; overflow: hidden; background: #121212; color: white; }
-        .app { display: flex; flex-direction: column; height: 100vh; padding: 16px; justify-content: space-between; }
-        
-        .scoreboard { display: flex; justify-content: space-between; align-items: center; background: #1e1e24; padding: 14px 20px; border-radius: 16px; border: 1px solid #2c2c35; }
-        .player { display: flex; flex-direction: column; width: 40%; }
-        .player.right { text-align: right; }
-        .p-name { font-size: 14px; color: #a0a0b0; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .p-score { font-size: 28px; font-weight: 800; }
-        .vs { font-size: 14px; font-weight: bold; color: #f1c40f; background: rgba(241, 196, 15, 0.15); padding: 6px 10px; border-radius: 8px; }
-
-        .arena { flex: 1; margin: 16px 0; border-radius: 24px; background: #25252d; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 20px; transition: background 0.1s; cursor: pointer; position: relative; border: 2px solid #32323e; }
-        .arena.searching { background: #2c3e50; border-color: #3498db; }
-        .arena.wait { background: #c0392b; border-color: #e74c3c; }
-        .arena.go { background: #27ae60; border-color: #2ecc71; }
-        
-        .main-text { font-size: 28px; font-weight: 900; margin-bottom: 10px; letter-spacing: 0.5px; }
-        .sub-text { font-size: 15px; opacity: 0.85; max-width: 260px; line-height: 1.4; }
-
-        .action-btn { width: 100%; padding: 18px; font-size: 18px; font-weight: bold; border: none; border-radius: 16px; background: #f1c40f; color: #000; cursor: pointer; box-shadow: 0 4px 15px rgba(241, 196, 15, 0.3); }
-        .action-btn:disabled { background: #333; color: #666; box-shadow: none; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>1V1 NEON ARENA</title>
+<link rel="stylesheet" href="style.css">
+<script src="https://telegram.org"></script>
 </head>
 <body>
-
-<div class="app">
-    <div class="scoreboard">
-        <div class="player">
-            <div class="p-name" id="my-name">Вы</div>
-            <div class="p-score" id="my-score">0</div>
-        </div>
-        <div class="vs">1 VS 1</div>
-        <div class="player right">
-            <div class="p-name" id="opp-name">Ожидание...</div>
-            <div class="p-score" id="opp-score">0</div>
+<div class="layout">
+    <div class="header">
+        <div class="logo">⚡ 1V1 NEON</div>
+        <div class="balance-box">
+            <span class="balance-val" id="balance-display">10 000</span>
+            <button class="add-btn" onclick="addDemoMoney()">+</button>
         </div>
     </div>
-
-    <div id="arena" class="arena">
-        <div class="main-text" id="main-text">ГОТОВЫ?</div>
-        <div class="sub-text" id="sub-text">Нажмите кнопку ниже, чтобы найти соперника онлайн</div>
+    <div class="content">
+        <div id="screen-games" class="screen active">
+            <div class="bet-selector">
+                <div class="bet-title">Ставка на дуэль (Демо)</div>
+                <div class="bet-buttons">
+                    <button class="bet-btn selected" onclick="setBet(100, this)">100</button>
+                    <button class="bet-btn" onclick="setBet(500, this)">500</button>
+                    <button class="bet-btn" onclick="setBet(1000, this)">1 000</button>
+                    <button class="bet-btn" onclick="setBet(5000, this)">5 000</button>
+                </div>
+            </div>
+            <div class="game-card">
+                <div class="game-info">
+                    <h3>⚡ Реакция 1 на 1</h3>
+                    <p>Дождись неоново-зеленого сигнала и нажми быстрее врага</p>
+                </div>
+                <button class="play-btn" onclick="startReactionMatch()">ИГРАТЬ</button>
+            </div>
+            <div class="game-card coming-soon">
+                <div class="game-info">
+                    <h3>♟️ Шашки / Нарды / Новые игры</h3>
+                    <p>Новые режимы дуэлей уже в разработке и скоро появятся здесь</p>
+                </div>
+                <div class="soon-badge">СКОРО</div>
+            </div>
+        </div>
+        <div id="screen-profile" class="screen">
+            <div class="profile-card">
+                <div class="avatar-circle" id="current-avatar">🦁</div>
+                <div class="user-name" id="profile-name">Игрок</div>
+                <div class="demo-badge">ДЕМО-РЕЖИМ • БЕСКОНЕЧНЫЙ БАЛАНС</div>
+                <div style="font-size: 12px; color: #8e8eb0;">Сменить аватар:</div>
+                <div class="avatars-grid">
+                    <button class="ava-opt" onclick="changeAvatar('🦁')">🦁</button>
+                    <button class="ava-opt" onclick="changeAvatar('🐺')">🐺</button>
+                    <button class="ava-opt" onclick="changeAvatar('👑')">👑</button>
+                    <button class="ava-opt" onclick="changeAvatar('👾')">👾</button>
+                    <button class="ava-opt" onclick="changeAvatar('🥷')">🥷</button>
+                </div>
+            </div>
+            <div class="stats-row">
+                <div class="stat-box">
+                    <div class="stat-num" id="stat-wins" style="color: #00ff88;">0</div>
+                    <div class="stat-label">Побед</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-num" id="stat-losses" style="color: #ff0055;">0</div>
+                    <div class="stat-label">Поражений</div>
+                </div>
+            </div>
+            <button class="withdraw-btn" onclick="alert('Вывод средств находится в разработке!')">🔒 ВЫВОД СРЕДСТВ (СКОРО)</button>
+            <button class="reset-btn" onclick="resetDemo()">Сбросить демо-прогресс</button>
+        </div>
+        <div id="screen-reaction" class="screen">
+            <div class="game-header">
+                <button class="back-btn" onclick="switchTab('games')">← В меню</button>
+                <div class="pot-badge" id="react-pot">Банк: 200</div>
+            </div>
+            <div class="duel-bar">
+                <div class="duel-player">
+                    <span class="duel-ava" id="duel-my-ava">🦁</span>
+                    <span class="duel-name" id="duel-my-name">Вы</span>
+                </div>
+                <div class="duel-vs">VS</div>
+                <div class="duel-player right">
+                    <span class="duel-name" id="duel-opp-name">Поиск...</span>
+                    <span class="duel-ava" id="duel-opp-ava">❓</span>
+                </div>
+            </div>
+            <div id="react-arena" class="arena" onpointerdown="handleReactTap()">
+                <div class="arena-title" id="react-title">ПОИСК СОПЕРНИКА...</div>
+                <div class="arena-sub" id="react-sub">Подбираем игрока со ставкой 100</div>
+            </div>
+        </div>
     </div>
-
-    <button id="action-btn" class="action-btn">НАЙТИ СОПЕРНИКА</button>
+    <div class="nav" id="bottom-nav">
+        <div class="nav-item active" id="nav-games" onclick="switchTab('games')">🎮 ИГРЫ</div>
+        <div class="nav-item" id="nav-profile" onclick="switchTab('profile')">👤 ПРОФИЛЬ</div>
+    </div>
 </div>
-
 <script>
-    if (window.Telegram && window.Telegram.WebApp) {
-        const tg = window.Telegram.WebApp;
-        tg.expand();
-        if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
-            document.getElementById('my-name').innerText = tg.initDataUnsafe.user.first_name;
-        }
-    }
-
-    const nicknames = ['Alex_Pro', 'Dmitry99', 'Killa_Rus', 'Maxon', 'Shadow77', 'Sanya_Win', 'Viper', 'Artem_GG'];
-    let state = 'idle';
-    let roundTimer = null;
-    let botTimer = null;
-    let startTime = 0;
-    let myScore = 0;
-    let oppScore = 0;
-
-    const arena = document.getElementById('arena');
-    const mainText = document.getElementById('main-text');
-    const subText = document.getElementById('sub-text');
-    const actionBtn = document.getElementById('action-btn');
-
-    actionBtn.addEventListener('click', startMatchmaking);
-    arena.addEventListener('pointerdown', handleTap);
-
-    function startMatchmaking() {
-        actionBtn.style.display = 'none';
-        state = 'searching';
-        arena.className = 'arena searching';
-        mainText.innerText = 'ПОИСК ИГРОКА...';
-        subText.innerText = 'Подбираем равного соперника';
-        document.getElementById('opp-name').innerText = 'Поиск...';
-
-        setTimeout(() => {
-            const randomOpp = nicknames[Math.floor(Math.random() * nicknames.length)];
-            document.getElementById('opp-name').innerText = randomOpp;
-            startRound();
-        }, 1500);
-    }
-
-    function startRound() {
-        state = 'wait';
-        arena.className = 'arena wait';
-        mainText.innerText = 'ЖДИТЕ ЗЕЛЕНЫЙ';
-        subText.innerText = 'Не нажимайте раньше времени!';
-
-        const delay = Math.floor(Math.random() * 2500) + 1500;
-        roundTimer = setTimeout(() => {
-            state = 'go';
-            startTime = Date.now();
-            arena.className = 'arena go';
-            mainText.innerText = 'ЖМИ СЕЙЧАС!';
-            subText.innerText = 'Тапай по экрану!';
-
-            if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.HapticFeedback) {
-                window.Telegram.WebApp.HapticFeedback.impactOccurred('heavy');
-            }
-
-            const oppReaction = Math.floor(Math.random() * 160) + 230;
-            botTimer = setTimeout(() => {
-                if (state === 'go') {
-                    finishRound(false, oppReaction + ' мс (соперник быстрее)');
-                }
-            }, oppReaction);
-
-        }, delay);
-    }
-
-    function handleTap() {
-        if (state === 'wait') {
-            clearTimeout(roundTimer);
-            finishRound(false, 'Фальстарт! Вы нажали слишком рано');
-        } else if (state === 'go') {
-            clearTimeout(botTimer);
-            const myReaction = Date.now() - startTime;
-            finishRound(true, 'Ваша реакция: ' + myReaction + ' мс');
-        }
-    }
-
-    function finishRound(isWin, reason) {
-        state = 'idle';
-        arena.className = 'arena';
-        if (isWin) {
-            myScore++;
-            document.getElementById('my-score').innerText = myScore;
-            mainText.innerText = 'ВЫ ПОБЕДИЛИ!';
-            mainText.style.color = '#2ecc71';
-            if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.HapticFeedback) {
-                window.Telegram.WebApp.HapticFeedback.notificationOccurred('success');
-            }
-        } else {
-            oppScore++;
-            document.getElementById('opp-score').innerText = oppScore;
-            mainText.innerText = 'ПОРАЖЕНИЕ';
-            mainText.style.color = '#e74c3c';
-            if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.HapticFeedback) {
-                window.Telegram.WebApp.HapticFeedback.notificationOccurred('error');
-            }
-        }
-        subText.innerText = reason;
-        actionBtn.innerText = 'ИГРАТЬ ЕЩЕ РАУНД';
-        actionBtn.style.display = 'block';
+let userName = 'Игрок';
+if (window.Telegram?.WebApp) {
+    window.Telegram.WebApp.expand();
+    if (window.Telegram.WebApp.initDataUnsafe?.user) userName = window.Telegram.WebApp.initDataUnsafe.user.first_name;
+}
+document.getElementById('profile-name').innerText = userName;
+document.getElementById('duel-my-name').innerText = userName;
+let balance = parseInt(localStorage.getItem('demo_balance'));
+if (isNaN(balance)) balance = 10000;
+let wins = parseInt(localStorage.getItem('demo_wins')) || 0;
+let losses = parseInt(localStorage.getItem('demo_losses')) || 0;
+let avatar = localStorage.getItem('demo_avatar') || '🦁';
+let currentBet = 100;
+const bots = [{ name: 'CyberWolf', ava: '🐺' }, { name: 'Shadow_X', ava: '🥷' }, { name: 'NeonKing', ava: '👑' }, { name: 'Viper777', ava: '👾' }];
+updateUI();
+function updateUI() {
+    document.getElementById('balance-display').innerText = balance.toLocaleString('ru-RU');
+    document.getElementById('stat-wins').innerText = wins;
+    document.getElementById('stat-losses').innerText = losses;
+    document.getElementById('current-avatar').innerText = avatar;
+    document.getElementById('duel-my-ava').innerText = avatar;
+    localStorage.setItem('demo_balance', balance); localStorage.setItem('demo_wins', wins); localStorage.setItem('demo_losses', losses); localStorage.setItem('demo_avatar', avatar);
+}
+function addDemoMoney() { balance += 10000; updateUI(); }
+function changeAvatar(e) { avatar = e; updateUI(); }
+function setBet(a, b) { currentBet = a; document.querySelectorAll('.bet-btn').forEach(x => x.classList.remove('selected')); b.classList.add('selected'); }
+function resetDemo() { balance = 10000; wins = 0; losses = 0; updateUI(); }
+let searchTimer = null, reactTimer = null, botReactTimer = null, reactState = 'idle', reactStart = 0;
+function switchTab(tab) {
+    clearTimeout(searchTimer); clearTimeout(reactTimer); clearTimeout(botReactTimer); reactState = 'idle';
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    document.getElementById('screen-' + tab).classList.add('active');
+    if (tab === 'games' || tab === 'profile') { document.getElementById('bottom-nav').style.display = 'flex'; document.getElementById('nav-' + tab).classList.add('active'); }
+    else { document.getElementById('bottom-nav').style.display = 'none'; }
+}
+function startReactionMatch() {
+    if (balance < currentBet) { alert('Нажми зеленый "+" вверху экрана для пополнения!'); return; }
+    switchTab('reaction');
+    const arena = document.getElementById('react-arena'), title = document.getElementById('react-title'), sub = document.getElementById('react-sub');
+    document.getElementById('react-pot').innerText = 'Банк: ' + (currentBet * 2);
+    document.getElementById('duel-opp-name').innerText = 'Поиск...'; document.getElementById('duel-opp-ava').innerText = '❓';
+    reactState = 'searching'; arena.className = 'arena searching';
+    title.innerText = 'ПОИСК СОПЕРНИКА...'; sub.innerText = 'Ставка: ' + currentBet;
+    searchTimer = setTimeout(() => {
+        const opp = bots[Math.floor(Math.random() * bots.length)];
+        document.getElementById('duel-opp-name').innerText = opp.name; document.getElementById('duel-opp-ava').innerText = opp.ava;
+        reactState = 'idle'; arena.className = 'arena';
+        title.innerText = 'СОПЕРНИК НАЙДЕН!'; sub.innerText = 'Нажми на экран для старта';
+    }, 1200);
+}
+function handleReactTap() {
+    if (reactState === 'searching') return;
+    const arena = document.getElementById('react-arena'), title = document.getElementById('react-title'), sub = document.getElementById('react-sub');
+    if (reactState === 'idle') {
+        if (balance < currentBet) { alert('Пополни баланс через "+"!'); return; }
+        balance -= currentBet; updateUI();
+        reactState = 'wait'; arena.className = 'arena wait'; title.innerText = 'ЖДИ ЗЕЛЕНЫЙ...'; sub.innerText = 'Не тапай раньше времени!';
+        reactTimer = setTimeout(() => {
+            reactState = 'go'; reactStart = Date.now(); arena.className = 'arena go'; title.innerText = 'ЖМИ СЕЙЧАС!'; sub.innerText = 'Быстрее соперника!';
+            const botTime = Math.floor(Math.random() * 160) + 230;
+            botReactTimer = setTimeout(() => {
+                if (reactState === 'go') { reactState = 'idle'; arena.className = 'arena'; losses++; updateUI(); title.innerText = 'ПОРАЖЕНИЕ'; sub.innerText = 'Соперник: ' + botTime + ' мс. Тапни еще.'; }
+            }, botTime);
+        }, Math.floor(Math.random() * 2500) + 1500);
+    } else if (reactState === 'wait') {
+        clearTimeout(reactTimer); reactState = 'idle'; arena.className = 'arena'; losses++; updateUI();
+        title.innerText = 'ФАЛЬСТАРТ!'; sub.innerText = 'Слишком рано! Нажми еще раз.';
+    } else if (reactState === 'go') {
+        clearTimeout(botReactTimer); const myTime = Date.now() - reactStart;
+        reactState = 'idle'; arena.className = 'arena'; balance += currentBet * 2; wins++; updateUI();
+title.innerText = 'ПОБЕДА! +' + (currentBet * 2); sub.innerText = 'Реакция: ' + myTime + ' мс! Тапни для новой игры.';
+}
+}
         
-        actionBtn.onclick = () => {
-            mainText.style.color = 'white';
-            actionBtn.style.display = 'none';
-            startRound();
-        };
-    }
-</script>
-</body>
-</html>
+      
